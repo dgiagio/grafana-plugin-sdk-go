@@ -160,6 +160,12 @@ func (f *Field) Append(e interface{}) {
 	f.vector.Append(e)
 }
 
+func (f *Field) AppendAll(f2 *Field) {
+	for i := range f2.vector.Len() {
+		f.Append(f2.At(i))
+	}
+}
+
 // Extend extends the Field length by i.
 // Consider using Frame.Extend() when possible since all Fields within
 // a Frame need to be of the same length before marshalling and transmission.

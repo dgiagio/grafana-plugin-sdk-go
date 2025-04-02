@@ -166,6 +166,21 @@ func (f ConvertFromProtobuf) QueryDataResponse(protoRes *pluginv2.QueryDataRespo
 	return qdr, nil
 }
 
+// ChunkedDataRequest converts a protobuf ChunkedDataRequest to the SDK version.
+// This handles the translation between wire format and SDK objects.
+func (f ConvertFromProtobuf) ChunkedDataRequest(protoReq *pluginv2.ChunkedDataRequest) *ChunkedDataRequest {
+	queries := make([]DataQuery, len(protoReq.Queries))
+	for i, q := range protoReq.Queries {
+		queries[i] = *f.DataQuery(q)
+	}
+
+	return &ChunkedDataRequest{
+		PluginContext: f.PluginContext(protoReq.PluginContext),
+		Headers:       protoReq.Headers,
+		Queries:       queries,
+	}
+}
+
 // CallResourceRequest converts protobuf version of a CallResourceRequest to the SDK version.
 func (f ConvertFromProtobuf) CallResourceRequest(protoReq *pluginv2.CallResourceRequest) *CallResourceRequest {
 	headers := map[string][]string{}
