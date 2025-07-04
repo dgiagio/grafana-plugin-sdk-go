@@ -55,6 +55,10 @@ type ServeOpts struct {
 	// Required to implement if data source.
 	QueryDataHandler QueryDataHandler
 
+	// ChunkedDataHandler handler for data streaming queries.
+	// Required to implement if data source and supports this feature.
+	ChunkedDataHandler ChunkedDataHandler
+
 	// StreamHandler handler for streaming queries.
 	StreamHandler StreamHandler
 
@@ -82,6 +86,7 @@ func (opts ServeOpts) HandlerWithMiddlewares() (Handler, error) {
 		CheckHealthHandler:  opts.CheckHealthHandler,
 		CallResourceHandler: opts.CallResourceHandler,
 		QueryDataHandler:    opts.QueryDataHandler,
+		ChunkedDataHandler:  opts.ChunkedDataHandler,
 		StreamHandler:       opts.StreamHandler,
 		AdmissionHandler:    opts.AdmissionHandler,
 		ConversionHandler:   opts.ConversionHandler,
@@ -104,8 +109,8 @@ func GRPCServeOpts(opts ServeOpts) (grpcplugin.ServeOpts, error) {
 		pluginOpts.ResourceServer = newResourceSDKAdapter(handler)
 	}
 
-	if opts.QueryDataHandler != nil {
-		pluginOpts.DataServer = newDataSDKAdapter(handler)
+	if opts.QueryDataHandler != nil && opts.ChunkedDataHandler != nil {
+		pluginOpts.DataServer = newDataSDKAdapter(opts.QueryDataHandler, opts.ChunkedDataHandler)
 	}
 
 	if opts.StreamHandler != nil {

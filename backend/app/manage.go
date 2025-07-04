@@ -48,6 +48,7 @@ func Manage(pluginID string, instanceFactory InstanceFactoryFunc, opts ManageOpt
 		CheckHealthHandler:  handler,
 		CallResourceHandler: handler,
 		QueryDataHandler:    handler,
+		ChunkedDataHandler:  handler,
 		StreamHandler:       handler,
 		AdmissionHandler:    opts.AdmissionHandler,
 		ConversionHandler:   opts.ConversionHandler,

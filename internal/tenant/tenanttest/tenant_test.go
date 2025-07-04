@@ -111,6 +111,10 @@ func (p *testPlugin) QueryData(_ context.Context, _ *backend.QueryDataRequest) (
 	return backend.NewQueryDataResponse(), nil
 }
 
+func (p *testPlugin) QueryChunkedData(_ context.Context, _ *backend.ChunkedDataRequest, _ backend.ChunkedDataWriter) error {
+	return nil
+}
+
 func (p *testPlugin) CallResource(_ context.Context, _ *backend.CallResourceRequest, _ backend.CallResourceResponseSender) error {
 	return nil
 }
