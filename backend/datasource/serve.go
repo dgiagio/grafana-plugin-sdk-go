@@ -21,6 +21,10 @@ type ServeOpts struct {
 	// Required to implement.
 	backend.QueryDataHandler
 
+	// ChunkedDataHandler handler for streaming data queries.
+	// Required to implement.
+	backend.ChunkedDataHandler
+
 	// StreamHandler for streaming queries.
 	backend.StreamHandler
 
@@ -43,6 +47,7 @@ func Serve(opts ServeOpts) error {
 		CheckHealthHandler:  opts.CheckHealthHandler,
 		CallResourceHandler: opts.CallResourceHandler,
 		QueryDataHandler:    opts.QueryDataHandler,
+		ChunkedDataHandler:  opts.ChunkedDataHandler,
 		StreamHandler:       opts.StreamHandler,
 		AdmissionHandler:    opts.AdmissionHandler,
 		ConversionHandler:   opts.ConversionHandler,

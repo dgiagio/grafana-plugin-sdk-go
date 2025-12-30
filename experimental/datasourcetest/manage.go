@@ -7,7 +7,8 @@ import (
 )
 
 type ManageOpts struct {
-	Address string
+	Address           string
+	MaxReceiveMsgSize int
 }
 
 type TestPlugin struct {
@@ -32,7 +33,9 @@ func Manage(instanceFactory datasource.InstanceFactoryFunc, opts ManageOpts) (Te
 		CheckHealthHandler:  handler,
 		CallResourceHandler: handler,
 		QueryDataHandler:    handler,
+		ChunkedDataHandler:  handler,
 		StreamHandler:       handler,
+		GRPCSettings:        backend.GRPCSettings{MaxReceiveMsgSize: opts.MaxReceiveMsgSize},
 	}, opts.Address)
 
 	if err != nil {
